@@ -64,3 +64,35 @@ default rules
 ('GET',    '%(path)s/new',           'new'),
 ('GET',    '%(path)s/<%(id)s>/edit', 'edit'),
 ```
+
+## wsgi example
+
+```python
+from biro import get, match
+
+@get('/')
+def home():
+    return 'home'
+
+@get('/hello/<name>')
+def hello(name):
+    return 'hello %s' % name
+
+def application(environ, start_response):
+    handler, params = match(environ['REQUEST_METHOD'].upper(),
+                            environ['PATH_INFO'])
+    if handler:
+        status = '200 OK'
+        response = handler(**params)
+    else:
+        status = '404 Not Found'
+        response = 'page not found'
+    start_response(status, [('Content-Type', 'text/html; charset=utf-8')])
+    return [response.encode('utf-8')]
+```
+
+save it as example.py, then it can be lunched using gunicorn like this:
+
+```
+$ gunicorn example:application
+```
