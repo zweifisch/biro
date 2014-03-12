@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+from urllib import parse
 
 
 class Router:
@@ -73,8 +74,11 @@ class Router:
         if handler not in self.__reversedidx__:
             return None
         pattern = self.__reversedidx__[handler].pattern.lstrip('^').rstrip('$')
-        return self.param_macher.sub(lambda m: str(kwargs[m.group(1)]),
+        path = self.param_macher.sub(lambda m: str(kwargs.pop(m.group(1))),
                                      pattern)
+        if kwargs:
+            path = "%s?%s" % (path, parse.urlencode(kwargs))
+        return path
 
     def __repr__(self):
         return "\n".join(["%s %s -> %s" %
