@@ -1,4 +1,4 @@
-from biro import RestfulRouter as Router
+from biro import Router
 
 
 def test_match():
@@ -44,21 +44,3 @@ def test_reverse():
     url = router.path_for('handler', id=13132, ext="png", size="l", foo="<>")
     assert  url in ['/avatar/13132.png?size=l&foo=%3C%3E',
                     '/avatar/13132.png?foo=%3C%3E&size=l']
-
-
-def test_resource():
-    from resources import article
-    router = Router()
-    router.resource('/article', article)
-
-    url = router.path_for(article.show, article_id=117)
-    assert '/article/117' == url
-
-
-def test_resources():
-    from resources import article
-    router = Router()
-    router.resources(article)
-
-    url = router.path_for(article.show, article_id=191)
-    assert '/article/191' == url

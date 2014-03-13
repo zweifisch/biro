@@ -3,24 +3,12 @@ bidirectional URI routing
 """
 
 from functools import partial
-from .restful import RestfulRouter
+from .router import Router
 
-routes = RestfulRouter()
+routes = Router()
 
 path_for = routes.path_for
 match = routes.match
-resource = routes.resource
-resources = routes.resources
-
-
-def method(httpmethod):
-    """decorator to overwrite default method(GET) for custom actions,
-    intended to be used within restful resource
-    """
-    def add_method(fn):
-        fn.__httpmethod__ = httpmethod
-        return fn
-    return add_method
 
 
 def route(method, pattern, handler=None):
