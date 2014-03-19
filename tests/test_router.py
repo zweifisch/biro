@@ -6,7 +6,11 @@ def test_match():
     router.append('GET', '/', 'handler4')
     router.append('GET', '/path', 'handler')
     router.append('POST', '/path', 'handler2')
+    router.append('PUT', '/path/<id>', 'handler5')
     router.append('GET', '/error', 'handler3')
+    handler, params = router.match('PUT', '/path/69')
+    assert params == dict(id="69")
+    assert handler == 'handler5'
     handler, params = router.match('GET', '/path')
     assert params == {}
     assert handler == 'handler'
@@ -42,5 +46,5 @@ def test_reverse():
     assert '/avatar/13132.png' == url
 
     url = router.path_for('handler', id=13132, ext="png", size="l", foo="<>")
-    assert  url in ['/avatar/13132.png?size=l&foo=%3C%3E',
-                    '/avatar/13132.png?foo=%3C%3E&size=l']
+    assert url in ['/avatar/13132.png?size=l&foo=%3C%3E',
+                   '/avatar/13132.png?foo=%3C%3E&size=l']

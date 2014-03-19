@@ -49,7 +49,10 @@ class Router:
         while len(segments):
             index = '/'.join(segments)
             if index in self.__idx__:
-                return self.match_rule(method, path, self.__idx__[index])
+                handler, params = self.match_rule(method, path,
+                                                  self.__idx__[index])
+                if handler:
+                    return handler, params
             segments.pop()
         return None, None
 
