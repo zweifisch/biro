@@ -6,6 +6,7 @@ from urllib import parse
 class Router:
 
     param_macher = re.compile(r"\(\?P<([^>]+)>[^)]*\)")
+    repr_pattern = "{0: <6} {1: <40} -> {2}"
 
     def __init__(self):
         self.__idx__ = defaultdict(list)
@@ -84,7 +85,7 @@ class Router:
         return path
 
     def __repr__(self):
-        return "\n".join(["%s %s -> %s" %
-                          (method, pattern.pattern, handler.__qualname__)
+        return "\n".join([self.repr_pattern.format(method, pattern.pattern,
+                                                   handler.__qualname__)
                           for rules in self.__idx__.values()
                           for (method, pattern, handler) in rules])

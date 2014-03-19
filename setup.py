@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='biro',
-    version='0.0.3',
+    version='0.0.4',
     url='https://github.com/zweifisch/biro',
     license='MIT',
     description='bidirectional URI routing',
